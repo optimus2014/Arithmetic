@@ -12,7 +12,7 @@ package com.arithmetic.Learning;
  *
  * 选择排序：
  * 1.简单选择排序:Done
- * 2.堆排序
+ * 2.堆排序：Done
  *
  * 归并排序
  *
@@ -25,6 +25,7 @@ public class SortFunc {
         System.out.println("冒泡的结果：" + showList(bubbleSort(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2})));
         System.out.println("选择排序的结果：" + showList(selectSort(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2})));
         System.out.println("插入排序的结果：" + showList(insertSort(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2})));
+        System.out.println("堆排序的结果：" + showList(heapSort(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2})));
     }
 
     private static String showList(int[] list){
@@ -147,10 +148,47 @@ public class SortFunc {
      * 堆排序：
      * 堆排序也是“选择排序的一种”
      * 思路：构建大(小)根堆，？？？
-     *
+     * 基本思想是：将待排序序列构造成一个大顶堆，此时，整个序列的最大值就是堆顶的根节点。将其与末尾元素进行交换，此时末尾就为最大值。然后将剩余n-1个元素重新构造成一个堆，这样会得到n个元素的次小值。如此反复执行，便能得到一个有序序列了
+     * 1. 初始化堆
+     * 2. 置换最大结点
+     * 3. 从根结点开始，再重新堆；确保data[i] >= data[2i+1] && data[i] >= data[2i+2]
      */
     public static int[]  heapSort(int[] data){
-
+        for(int i = data.length/2 - 1;i >= 0;i --){
+            // 初始化大根堆，从第一个非叶子结点开始，扫描至根结点
+            adjustHeap(data,i , data.length);
+        }
+        for(int i = data.length - 1; i > 0 ; i --){
+            int tmp = data[0];
+            data[0] = data[i];
+            data[i] = tmp;
+            adjustHeap(data,0,i - 1);
+        }
         return data;
+    }
+
+    public static void adjustHeap(int[] data,int i ,int len){
+        // 调整每个非叶子结点，使data[i] >data[2i + 1] && data[i] > data[2i + 2]
+        if(i >= len || 2*i +1 >=len){
+            return;
+        }
+        int left = i * 2 + 1;
+        int right = i * 2 + 2;
+        int max = i;  // 默认当前值是最大值
+        if(left <= len && data[max] < data[left]){
+            max = left;
+        }
+        if(right <= len && data[max] < data[right]){
+            max = right;
+        }
+
+        if(max != i){
+            // 当前结点不是最大值，交换位置
+            int tmp = data[i];
+            data[i] = data[max];
+            data[max] = tmp;
+            adjustHeap(data,max,len);
+        }
+
     }
 }

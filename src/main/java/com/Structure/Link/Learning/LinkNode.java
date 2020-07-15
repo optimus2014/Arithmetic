@@ -23,12 +23,12 @@ package com.Structure.Link.Learning;
  */
 //单链表
 public class LinkNode {
-    public Object value;
+    public int value;
     public LinkNode next = null;
     public LinkNode(){
 
     }
-    public LinkNode(Object value){
+    public LinkNode(int value){
         this.value = value;
     }
 

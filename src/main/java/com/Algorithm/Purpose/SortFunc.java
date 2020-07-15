@@ -4,7 +4,7 @@ package com.Algorithm.Purpose;
  * 8大排序算法：
  * 交换排序：
  * 1.冒泡:Done
- * 2.快排:Done
+ * 2.快排:Done(nlogN)，核心思想，分治和分区
  *
  * 插入排序
  * 1.希尔排序
@@ -14,9 +14,17 @@ package com.Algorithm.Purpose;
  * 1.简单选择排序:Done
  * 2.堆排序：Done
  *
- * 归并排序
+ * 归并排序:(nlogN),空间复杂度较高，不是原地排序算法
  *
  * 基数排序
+ *
+ * 需要掌握排序算法：
+ * 稳定性
+ * 最好时间复杂度
+ * 最坏时间复杂度
+ * 平均时间复杂度
+ *
+ * 归并排序&快速排序都用到了分治思想
  */
 public class SortFunc {
     public static void main(String[] args) {
@@ -26,6 +34,8 @@ public class SortFunc {
         System.out.println("选择排序的结果：" + showList(selectSort(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2})));
         System.out.println("插入排序的结果：" + showList(insertSort(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2})));
         System.out.println("堆排序的结果：" + showList(heapSort(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2})));
+
+        System.out.println("第K大的元素结果：" + findKthLargest(new int[]{1, 2, 32, 2, 1, 4, 5, 6, 7, 3, 2},5));
     }
 
     private static String showList(int[] list){
@@ -136,7 +146,6 @@ public class SortFunc {
             }
             // 逆序移动元素
             for(int t = i ; t > addr ; t --){
-//                System.out.println("CS 中间值:"+ showList(data) +";Addr"+addr +"；待校验元素："+tmp+"待校验元素下标："+i);
                 data[t] = data[t - 1];
             }
             data[addr] = tmp;
@@ -191,4 +200,65 @@ public class SortFunc {
         }
 
     }
+
+    /**
+     * 归并排序
+     *
+     */
+    public static int[] mergeSort(int[] data){
+        return data;
+    }
+
+
+    /**
+     * 使用快排思想，查找第k大的元素
+     */
+    public static int findKthLargest(int[] nums, int k) {
+        int need = nums.length - k;
+        int front = 0;
+        int tail = nums.length - 1;
+        int index = getQuickIndex(nums,front,tail);
+        while(need != index){
+            System.out.println("Index=" + index+";need="+need);
+            if(index > need){
+                tail = index - 1;
+                index = getQuickIndex(nums,front,tail);
+            } else {
+                front = index + 1;
+                System.out.println("front=" + front+";tail="+tail);
+                index = getQuickIndex(nums,front,tail);
+                System.out.println("Index=" + index+";need="+need);
+            }
+        }
+        return nums[index];
+
+    }
+    public static int getQuickIndex(int[] data,int front,int tail){
+        int tmp = data[front];
+        int addr = front;
+        while(front < tail){
+            while(data[tail] > tmp && front < tail){
+                tail -= 1;
+            }
+            while(data[front] <= tmp && front < tail){
+                front += 1;
+            }
+            if(tail != front){
+                int swp = data[tail];
+                data[tail] = data[front];
+                data[front] = swp;
+            }
+        }
+        if(tmp > data[front]){
+            data[addr] = data[front];
+            data[front] = tmp;
+        }
+        return front;
+    }
+
+
+
+    /**
+     * 线性排序
+     * */
 }

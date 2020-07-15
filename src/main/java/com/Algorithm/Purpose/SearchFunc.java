@@ -1,4 +1,4 @@
-package com.arithmetic.Learning;
+package com.Algorithm.Purpose;
 
 /***
  * 7大查找算法：(需要已排序列表)

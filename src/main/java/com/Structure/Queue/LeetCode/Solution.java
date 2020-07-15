@@ -1,4 +1,4 @@
-package com.Queue.Learning;
+package com.Structure.Queue.LeetCode;
 
 public class Solution {
     public static void main(String[] args) {

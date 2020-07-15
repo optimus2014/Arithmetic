@@ -1,4 +1,4 @@
-package com.Graph.Learning;
+package com.Structure.Graph.Learning;
 
 /**
  * 图的遍历算法：

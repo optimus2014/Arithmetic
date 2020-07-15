@@ -1,21 +1,17 @@
-package com.String.Learning;
+package com.Structure.Link.LeetCode;
 
-import com.Array.Learning.LinkNode;
-
-import java.util.HashMap;
+import com.Structure.Link.Learning.LinkNode;
 
 /**
- * LeetCode中关于String的练习题
+ * 链表相关的LeetCode题目
  */
-public class StringPractice {
+public class LinkLeetCode {
     public static void main(String[] args) {
         testCheckPlalindrome();
-
     }
 
-
     /**
-     *判断一个字符串（用单链表存储）是否是回文字符串
+     *判断一个单链表是否是回文链表
      * absadas
      * 要求：
      * 时间复杂度：O(n)
@@ -64,34 +60,4 @@ public class StringPractice {
         System.out.println("回文：" + checkPlalindrome(head));
         System.out.println("回文：" + checkPlalindrome(LinkNode.createLink(new int[]{1,2})));
     }
-
-    /**
-     * 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
-     *
-     * 示例 1:
-     *
-     * 输入: "abcabcbb"
-     * 输出: 3
-     * 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
-     *
-     * 解题思路：
-     * 双指针，滑动窗口
-     * */
-    public static int lengthOfLongestSubstring(String s){
-
-        if(null == s || s.length() == 0){
-            return 0;
-        }
-        int result = 1;
-        HashMap<Character,Integer> bucket = new HashMap<Character, Integer>();
-        for(int left=0,right=0;right <s.length();right ++){
-            if(bucket.containsKey(s.charAt(right))){
-                left = Math.max(left,bucket.get(s.charAt(right)) + 1);
-            }
-            bucket.put(s.charAt(right),right);
-            result = Math.max(result,right - left + 1);
-        }
-        return result;
-    }
-
 }

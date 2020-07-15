@@ -1,4 +1,4 @@
-package com.Array.Learning;
+package com.Structure.Link.Learning;
 
 /***
  * 链表数据结构：

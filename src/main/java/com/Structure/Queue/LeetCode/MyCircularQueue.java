@@ -1,6 +1,4 @@
-package com.Queue.Learning;
-
-import java.util.ArrayList;
+package com.Structure.Queue.LeetCode;
 
 /**
  * 自定义一个循环队列

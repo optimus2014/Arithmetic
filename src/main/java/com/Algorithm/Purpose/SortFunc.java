@@ -1,4 +1,4 @@
-package com.arithmetic.Learning;
+package com.Algorithm.Purpose;
 
 /**
  * 8大排序算法：

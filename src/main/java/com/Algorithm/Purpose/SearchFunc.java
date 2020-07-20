@@ -11,6 +11,9 @@ package com.Algorithm.Purpose;
  * 加分题：
  * 1.红黑树：平衡查找树
  * 2.B+树
+ *
+ *
+ * redis中使用跳表实现有序集合
  */
 public class SearchFunc {
     public static void main(String[] args) {
@@ -36,4 +39,14 @@ public class SearchFunc {
         }
         return -1;
     }
+
+
+    /**
+     * 使用二分查找，计算一个数的平方根，要求精确到小数点后6位。
+     * 使用近似法
+     */
+    public static float sqrtByBinary(int num){
+        return 0;
+    }
+
 }

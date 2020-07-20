@@ -21,6 +21,10 @@ public class RecursionLearning {
         for(int i = 0;i < 15 ; i ++){
             System.out.println("斐波那契数列："+ fibFunc(i));
         }
+
+        System.out.println("二分查找结果："+ binarySearch(new int[]{1,2,3,4,5,6,7},3));
+        System.out.println("二分查找结果："+ binarySearch(new int[]{1,2,3,4,5,6,7},8));
+        System.out.println("二分查找结果："+ binarySearch(new int[]{},0));
     }
     // 斐波那契数列:获取第n个斐波那契数列数列值
     public static int fibFunc(int n){
@@ -35,4 +39,24 @@ public class RecursionLearning {
         }
     }
 
+    // 使用递归实现二分查找
+    public static int binarySearch(int[] data,int value){
+        return checkMid(data,0,data.length - 1,value);
+
+    }
+    // 判断中间值是否是查找值
+    private static int checkMid(int[] data ,int low,int high,int value){
+        if(low > high){
+            return -1;
+        }
+        int mid = low + ((high - low) >> 1);
+        if(data[mid] == value){
+            return mid;
+        } else if (data[mid] < value){
+            return checkMid(data,mid + 1,high,value);
+        } else {
+            return checkMid(data,low,high - 1,value);
+        }
+
+    }
 }

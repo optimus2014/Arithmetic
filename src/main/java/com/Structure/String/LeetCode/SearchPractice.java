@@ -1,4 +1,4 @@
-package com.LeetCode.String;
+package com.Structure.String.LeetCode;
 
 /**
  * 查找类的leetcode练习

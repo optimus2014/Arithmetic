@@ -1,4 +1,4 @@
-package com.LeetCode.String;
+package com.Structure.String.LeetCode;
 
 import com.Structure.Link.Learning.LinkNode;
 

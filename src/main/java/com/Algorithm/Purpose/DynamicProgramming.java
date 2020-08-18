@@ -17,6 +17,8 @@ import java.util.HashSet;
  *
  */
 public class DynamicProgramming {
-
+    public static void main(String[] args) {
+        System.out.println("动态规划算法Demo");
+    }
 
 }

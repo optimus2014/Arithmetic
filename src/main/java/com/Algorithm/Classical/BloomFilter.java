@@ -1,5 +1,10 @@
 package com.Algorithm.Classical;
 
+import sun.security.util.Length;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * 布隆过滤器
  * 用途：快速查找某个元素是否在集合中，是Hash算法的一个变种
@@ -21,5 +26,49 @@ package com.Algorithm.Classical;
 public class BloomFilter {
     public static void main(String[] args) {
         System.out.println("这是布隆过滤器");
+        Set source = new HashSet();
+        source.add("a");
+        source.add("b");
+        BloomFilter bf = new BloomFilter(10,source,3);
+        System.out.println(bf.b.length);
+
     }
+
+
+    // 二进制容器
+    private boolean[] b;
+
+    /**
+     * 参数释义：
+     * n：BloomFliter容器长度
+     * sourceSet：原始待检验的Set集合
+     * k：Hash函数个数。
+     * */
+    public BloomFilter(int n, Set sourceSet, int k){
+        this.b = new boolean[n];
+        this.b[n/2] = true;
+        for (boolean i : this.b) {
+//            i = false;
+            System.out.println(i);
+
+        }   // 这一句可能就不需要，默认全部是False
+
+
+    }
+
+
+
+    // 检验函数，判断Item是否在原始集合中
+    public boolean checkItem(String item){
+        return true;
+    }
+    // 添加元素
+    public void addItem(String item){
+        // this.b
+    }
+
+    // Hash 函数内部类
+//    https://www.cnblogs.com/xiaobaituyun/p/11011393.html
 }
+
+

@@ -22,6 +22,12 @@ import java.util.Set;
  * 改进方法：
  * 1.误差率问题：误差不可避免，要选择对误差有一定容忍度的场景进行使用；另外辅助”核心数据白名单“的方式，进行二次校验；
  * 2.使用整数型容器，每出现一次Hash碰撞，数值+1，但是可能会有溢出情况，这种方法不理想。
+ *
+ * 创建Hash函数库
+ *
+ * TODO：
+ * 1. 搞清楚正确率计算方法
+ * 2. 搞清楚不同数据量需要适配的Hash函数个数
  */
 public class BloomFilter {
     public static void main(String[] args) {

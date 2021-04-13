@@ -30,12 +30,13 @@ import java.util.Set;
  * TODO：
  * 1. 搞清楚正确率计算方法
  * 2. 搞清楚不同数据量需要适配的Hash函数个数
+ * 3. 计算误算率（False Positive）
  */
 public class BloomFilter {
     public static void main(String[] args) {
         System.out.println("这是布隆过滤器");
         Set<String> source = loadDataSet(data);
-        BloomFilter bf = new BloomFilter(source.size(),3);
+        BloomFilter bf = new BloomFilter(2<<15,3);
         for (String item : source){
             bf.add(item);
         }
@@ -153,7 +154,7 @@ public class BloomFilter {
             int len = value.length();
             for(int i = 0;i < len; i ++){
                 // 注：之前遇到的一个坑，字符串长度为1时，seed失效，for循环只会遍历一个数值
-                result = (result << this.seed)  + value.charAt(i) >> 3;
+                result = (result << this.seed)  + value.charAt(i) >> this.seed;
             }
             return  (this.cap - 1) & result;  //
         }

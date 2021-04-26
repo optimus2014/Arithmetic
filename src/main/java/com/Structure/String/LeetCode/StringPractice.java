@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class StringPractice {
     public static void main(String[] args) {
-
+        System.out.println(replaceSpace("a b c "));
     }
 
 
@@ -42,6 +42,24 @@ public class StringPractice {
             result = Math.max(result,right - left + 1);
         }
         return result;
+    }
+
+
+    /**
+     * 将字符串中的空格替换为'%20'
+     * @param s
+     * @return
+     */
+    public static String replaceSpace(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (char c : s.toChars()){
+            if(' '.equels(c)){
+                sb.append("%20");
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
 }

@@ -7,6 +7,12 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 图的遍历算法：
  *   - 深度优先算法：DFS
  *   - 广度优先算法：BFS
+ *
+ * 总结：
+ * DFS可以有递归和非递归两种实现逻辑，
+ *    递归需要维护递归函数处理节点标识位和最终结果，
+ *    非递归方法使用栈
+ * BFS一般来说，只能用非递归方法，使用队列实现。（也有用伪递归的方法，没啥意义）
  */
 public class GrapScanhFunc {
     public static void main(String[] args) {
@@ -26,12 +32,13 @@ public class GrapScanhFunc {
         graph.addEdge(item2,item3,3);
         graph.addEdge(item3,item5,4);
         graph.addEdge(item4,item5,5);
-        graph.addEdge(item4,item1,6);
+        graph.addEdge(item4,item6,6);
         graph.addEdge(item6,item7,3);
         graph.addEdge(item4,item7,4);
         show(BFS(graph));
         show(BFS(graph,item1));
-        show(graph.getStart());
+        show(DFS(graph,item1));
+        show(DFS_r(graph,item1));
         graph.show();
 
     }
@@ -39,16 +46,70 @@ public class GrapScanhFunc {
     /**
      * 深度优先算法：遍历图，从一个节点起步，一直走到图的尽头
      * 核心点：
+     * 两种解法：递归法 & 非递归法
      * 1. 使用递归算法
      * 2. 维护一个状态位表，标识当前节点是否已遍历
-     * @param graph
-     * @return
+     *
+     * 非递归方法：
+     * 使用栈,每次取栈最后一个节点，判断是否已扫描，没扫描则添加到结果队列中，并将后置节点依次添加到栈中
      */
-    public static List<GraphItem> DFS(Graph graph){
+    public static List<GraphItem> DFS(Graph graph,GraphItem start){
         List<GraphItem> result = new ArrayList<GraphItem>();
+        // 图元素标识位
+        Map<GraphItem,Boolean> itemKeys = new HashMap<GraphItem, Boolean>();
+        for(GraphItem item : graph.getItems()){
+            itemKeys.put(item,Boolean.FALSE);
+        }
+
+        // 注List接口，没有removeLast()等函数
+        LinkedList<GraphItem> stack = new LinkedList<GraphItem>();
+        stack.add(start);
+        while(stack.size() > 0){
+            GraphItem item = stack.removeLast();
+            if(!itemKeys.get(item)){
+                // 当前元素不存在
+                result.add(item);
+                itemKeys.put(item,Boolean.TRUE);
+                for(GraphItem tem_item: graph.getGraph().get(item).keySet()){
+                    stack.add(tem_item);
+                }
+            } else {
+                // 元素已经处理，跳过
+                continue;
+            }
+        }
         return result;
     }
 
+    /**
+     * DFS：递归方法处理做图的遍历
+     * @param graph
+     * @param start
+     * @return
+     */
+    public static List<GraphItem> DFS_r(Graph graph,GraphItem start){
+        List<GraphItem> result = new ArrayList<GraphItem>();
+        Map<GraphItem,Boolean> itemKeys = new HashMap<GraphItem, Boolean>();
+        for(GraphItem item : graph.getItems()){
+            itemKeys.put(item,Boolean.FALSE);
+        }
+
+        // 从起始节点，开始遍历整张图
+        dfs_re(graph,start,itemKeys,result);
+        return result;
+    }
+    // 深度优先遍历递归方法
+    private static void dfs_re(Graph graph, GraphItem start, Map<GraphItem,Boolean> itemKeys,List<GraphItem> result){
+        if(itemKeys.get(start)){
+            // 处理过的节点直接跳过
+            return;
+        }
+        itemKeys.put(start,Boolean.TRUE);
+        result.add(start);
+        for(GraphItem item : graph.getGraph().get(start).keySet()){
+            dfs_re(graph,item,itemKeys,result);
+        }
+    }
 
 
 
@@ -114,6 +175,7 @@ public class GrapScanhFunc {
         }
         return result;
     }
+
 
     public static void show(List<GraphItem> graph){
         System.out.println("************ 开始打印图遍历结果 ************");

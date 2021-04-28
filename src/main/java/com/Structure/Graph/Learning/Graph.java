@@ -1,6 +1,7 @@
 package com.Structure.Graph.Learning;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * 图元素：
@@ -45,8 +46,14 @@ public final class Graph{
         graph.show();
 
         System.out.println("起始节点：" + graph.getStart().get(2).getValue());
-        // 测试图的遍历方法
-        GrapScanhFunc.BFS(graph);
+        // 测试图的连通性
+        System.out.println("节点连通性：" + graph.checkConnecte(item2,item7));
+        graph.addEdge(item5,item6,10);
+        System.out.println("节点连通性：" + graph.checkConnecte(item2,item7));
+
+
+
+
     }
 
     /************************************************************
@@ -147,6 +154,33 @@ public final class Graph{
             System.out.println();
         }
         System.out.println("************** Graph 打印结束 ****************\n");
+    }
+
+    /**
+     * 判断两个节点的连通性
+     * 使用广度优先
+     * @param start
+     * @param end
+     * @return
+     */
+    public boolean checkConnecte(GraphItem start , GraphItem end){
+        Queue<GraphItem> queue = new LinkedBlockingQueue<GraphItem>();
+        Set<GraphItem> set = new HashSet<GraphItem>();
+        queue.add(start);
+        GraphItem next;
+        while (queue.size() > 0){
+            next = queue.poll();
+            if (next == end){
+                return true;
+            }
+            if(set.contains(next)){
+                continue;
+            }
+            for (GraphItem item:this.graph.get(next).keySet()){
+                queue.add(item);
+            }
+        }
+        return false;
     }
 
     /**

@@ -1,5 +1,10 @@
 package com.Structure.Graph.Learning;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * 图算法：
  * 1.最短路径
@@ -47,7 +52,7 @@ public class GraphAlgorithms {
         // 类似于工厂方法
         switch (algo) {
             case Dijkstra:
-                return shortestDijkstra(graph, start, end);
+                return shortestDijkstra(graph,start, end).get(start);
             case Floyd:
                 return shortestFloyd(graph, start, end);
             case BellmanFord:
@@ -56,9 +61,66 @@ public class GraphAlgorithms {
                 return 0;
         }
     }
-    // Dijkstra算法
-    private static int shortestDijkstra(Graph graph,GraphItem start, GraphItem end){
-        return 0;
+    /**
+     * 最短路径：Dijkstra算法
+     * 递归算法
+     * */
+    private static Map<GraphItem,Integer> shortestDijkstra(Graph graph, GraphItem start,GraphItem end){
+        Map<GraphItem,Integer> S = new HashMap<GraphItem,Integer>();
+        Map<GraphItem,Integer> D = new HashMap<GraphItem,Integer>();
+
+        // 初始化D数组
+        for(GraphItem item:graph.getGraph().keySet()){
+            if(item == end){
+                // 剔除当前节点
+                continue;
+            }
+            if(graph.getGraph().get(item).containsKey(end)){
+                D.put(item,graph.getGraph().get(item).get(end));
+            } else{
+                // 当前节点不可达
+                D.put(item,Integer.MAX_VALUE);
+            }
+        }
+        // 初始化S数组
+        S.put(end,0);
+
+        // 添加S数组(D数组中最小值)
+        while(D.size() > 0){
+            // 选取最小值
+            GraphItem min = null;
+            for(GraphItem tmp:D.keySet()){
+                if(min == null || min.getValue() > tmp.getValue()){
+                    min = tmp;
+                }
+            }
+            // TODO:error，https://blog.csdn.net/wang13342322203/article/details/89377256
+//            if(min.getValue() == start.getValue()){
+//                // 找到元素
+//                return min.getValue();
+//            }
+            // 更新S数组
+            S.put(min,min.getValue());
+            // 删除D数组中的最小元素
+            D.remove(min);
+
+
+            // 更新各个节点的数值
+            for(GraphItem d: D.keySet()){
+                for(GraphItem s:S.keySet()){
+                    if(!graph.getGraph().get(d).containsKey(s)){
+                        continue;
+                    } else{
+                        // D队列中元素和S队列元素累加，
+                        if(graph.getGraph().get(d).get(s) + S.get(s)< D.get(d)){
+                            D.put(d,graph.getGraph().get(d).get(s) + S.get(s));
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(S);
+        return S;
     }
     // Floyd算法
     private static int shortestFloyd(Graph graph,GraphItem start, GraphItem end){

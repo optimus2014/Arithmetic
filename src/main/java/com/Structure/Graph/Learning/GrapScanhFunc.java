@@ -41,6 +41,8 @@ public class GrapScanhFunc {
         show(DFS_r(graph,item1));
         graph.show();
 
+        System.out.println("最短路径：" + GraphAlgorithms.shortestPaths(graph,item1,item5, GraphAlgorithms.ALGORITHMS.Dijkstra));
+
     }
 
     /**

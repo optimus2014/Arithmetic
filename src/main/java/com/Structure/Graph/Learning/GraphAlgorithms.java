@@ -52,7 +52,7 @@ public class GraphAlgorithms {
         // 类似于工厂方法
         switch (algo) {
             case Dijkstra:
-                return shortestDijkstra(graph,start, end).get(start);
+                return shortestDijkstra(graph,start, end);
             case Floyd:
                 return shortestFloyd(graph, start, end);
             case BellmanFord:
@@ -65,7 +65,7 @@ public class GraphAlgorithms {
      * 最短路径：Dijkstra算法
      * 递归算法
      * */
-    private static Map<GraphItem,Integer> shortestDijkstra(Graph graph, GraphItem start,GraphItem end){
+    private static Integer shortestDijkstra(Graph graph, GraphItem start,GraphItem end){
         Map<GraphItem,Integer> S = new HashMap<GraphItem,Integer>();
         Map<GraphItem,Integer> D = new HashMap<GraphItem,Integer>();
 
@@ -84,23 +84,26 @@ public class GraphAlgorithms {
         }
         // 初始化S数组
         S.put(end,0);
+        // 打印初始化的函数
+//        showMap(S,"初始化的S数组");
+//        showMap(D,"初始化的D数组");
 
         // 添加S数组(D数组中最小值)
         while(D.size() > 0){
-            // 选取最小值
+            // 选取D数组中的最小值
             GraphItem min = null;
             for(GraphItem tmp:D.keySet()){
-                if(min == null || min.getValue() > tmp.getValue()){
+                if(min == null || D.get(min) > D.get(tmp)){
                     min = tmp;
                 }
             }
-            // TODO:error，https://blog.csdn.net/wang13342322203/article/details/89377256
-//            if(min.getValue() == start.getValue()){
-//                // 找到元素
-//                return min.getValue();
-//            }
+            if(min == start){
+                // 找到元素
+                return D.get(min);
+            }
             // 更新S数组
-            S.put(min,min.getValue());
+            S.put(min,D.get(min));
+//            showMap(S,"更新中的S数组");
             // 删除D数组中的最小元素
             D.remove(min);
 
@@ -109,6 +112,7 @@ public class GraphAlgorithms {
             for(GraphItem d: D.keySet()){
                 for(GraphItem s:S.keySet()){
                     if(!graph.getGraph().get(d).containsKey(s)){
+                        // d节点到s节点不直连，默认还是无限远，跳过
                         continue;
                     } else{
                         // D队列中元素和S队列元素累加，
@@ -118,9 +122,11 @@ public class GraphAlgorithms {
                     }
                 }
             }
+//            showMap(D,"更新中的D数组");
+
         }
-        System.out.println(S);
-        return S;
+        // 起点和终点没有连接，默认返回无限远
+        return Integer.MAX_VALUE;
     }
     // Floyd算法
     private static int shortestFloyd(Graph graph,GraphItem start, GraphItem end){
@@ -129,5 +135,14 @@ public class GraphAlgorithms {
     // Bellman算法
     private static int shortestBellman(Graph graph,GraphItem start, GraphItem end){
         return 0;
+    }
+
+    private static void showMap(Map<GraphItem,Integer> data,String name){
+        System.out.printf("****************** Map-%s 开始展示 *****************\n",name);
+        for(GraphItem item : data.keySet()){
+            System.out.printf("%s:%d,  ",item.getValue(),data.get(item));
+        }
+        System.out.printf("\n****************** Map-%s 展示结束 *****************\n\n",name);
+
     }
 }

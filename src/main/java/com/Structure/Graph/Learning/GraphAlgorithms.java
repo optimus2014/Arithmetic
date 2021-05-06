@@ -14,6 +14,10 @@ import java.util.Set;
  * 5.判断是否有环
  * 6.判断是否是连通图（可以连接的子图），连通分量
  * 7.拓扑排序
+ *
+ * 经典算法：
+ * 1.PageRank
+ * 2.Louvain 社区发现
  */
 
 public class GraphAlgorithms {
@@ -63,7 +67,10 @@ public class GraphAlgorithms {
     }
     /**
      * 最短路径：Dijkstra算法
-     * 递归算法
+     * 算法思路：
+     * 1.维护两个数组，数组S标识计算出来的最终结果，记录各个节点到end节点的最短距离，D数组表示中间状态，维护D中的当前元素到S数组中各个节点距离的最小值；
+     * 2.每轮计算过程，抽取D中的最小值，添加到S中，并更新D中各个节点的最小距离。
+     * 3.找到起始节点，并返回。循环结束还未找到，说明两个节点没有连接。
      * */
     private static Integer shortestDijkstra(Graph graph, GraphItem start,GraphItem end){
         Map<GraphItem,Integer> S = new HashMap<GraphItem,Integer>();
@@ -123,12 +130,14 @@ public class GraphAlgorithms {
                 }
             }
 //            showMap(D,"更新中的D数组");
-
         }
         // 起点和终点没有连接，默认返回无限远
         return Integer.MAX_VALUE;
     }
-    // Floyd算法
+    /**
+     * Floyd算法：
+     * 插点法.
+     * */
     private static int shortestFloyd(Graph graph,GraphItem start, GraphItem end){
         return 0;
     }

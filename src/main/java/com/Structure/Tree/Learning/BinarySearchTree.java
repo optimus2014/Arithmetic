@@ -9,6 +9,10 @@ package com.Structure.Tree.Learning;
  * 4.查找最大节点&最小节点
  * 5.平衡
  *
+ * 树的知识点：
  */
 public class BinarySearchTree {
+    public static void main(String[] args) {
+        System.out.println("二叉树");
+    }
 }

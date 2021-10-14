@@ -1,5 +1,6 @@
 package com.Structure.Link.LeetCode;
 
+import com.Structure.Link.Learning.CirculeLink;
 import com.Structure.Link.Learning.LinkNode;
 
 /**
@@ -17,27 +18,62 @@ import com.Structure.Link.Learning.LinkNode;
  *   2.2 缓存已满，删除尾结点，新的数据节点插入到链表头部。
  *
  * 注：由于每次遍历的时间复杂度是O(n)，可以再维护一个Hash表，查找复杂度O(1)
+ * 可以使用环状链表
+ *
+ * 需要完成的功能：
+ * 1. 环形链表的增删查
+ * 2. LRU算法的查找逻辑
  *
  */
 public class LRU {
 
-
     public static void main(String[] args) {
         LinkNode ln = new LinkNode();
-    }
 
-    // 缓存包含查找功能
-    public void search(){
+        // 测试LRU算法的性能和FIFO的性能区别
 
     }
 
-    // 缓存链表
-    private Node MemCache;
-
-    // 缓存队列的数据节点类型，使用内部类
-    class Node{
-
+    // 查找(缓存是介于CPU和磁盘IO之间的区域，临时存放高频使用的数据)
+    public Integer search(LinkNode data){
+        // 查找对象指针的具体值，cache中
+        LinkNode cacheIndex = this.MemCache.search(data);
+        if (cacheIndex == null){
+            return cacheIndex.value;
+        } else {
+            // 去磁盘或者内存IO中查询
+            return null;
+        }
     }
+
+    // 更新缓存
+    public void updateCache(LinkNode data){
+        // 如果被访问数据已经存在链表中，则原记录删除，重新头插入；
+        if(this.MemCache.search(data) == null){
+            // 删除节点，头节点插入
+            this.MemCache.delete(data);
+            this.MemCache.insert(data,this.MemCache.getHead());
+        } else {
+            // 待查找的数据不存在
+            if (this.MemCache.isFull()){
+                // 链表已满，删除尾节点，插入头节点
+                this.MemCache.delete(this.MemCache.getTail());
+                this.MemCache.insert(data,this.MemCache.getHead());
+            } else {
+                // 链表未满，数据插入头节点
+                this.MemCache.insert(data,this.MemCache.getHead());
+            }
+        }
+    }
+
+    // 缓存链表，使用环形链表
+    private CirculeLink MemCache = new CirculeLink();
+
+
+
+
 }
+
+
 
 

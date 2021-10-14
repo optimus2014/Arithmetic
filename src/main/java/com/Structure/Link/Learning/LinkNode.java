@@ -119,9 +119,3 @@ class BothwayLinkNode{
     private BothwayLinkNode next = null;
 }
 
-// 循环链表
-class CirculeLinkNode{
-
-    private int value;
-    private CirculeLinkNode next = null;
-}

@@ -43,7 +43,7 @@ public class LRU {
         // 测试LRU算法的性能和FIFO的性能区别
         LRU lru = new LRU(6);
         for (int i = 0 ; i < 100; i ++) {
-            LinkNode node = new LinkNode(new Random().nextInt(10) + 1);
+            LinkNode node = new LinkNode(new Random().nextInt(20) + 1);
             System.out.printf("当前结点值：%s； ",node.value);
             lru.search(node);
             lru.MemCache.show();
@@ -64,7 +64,9 @@ public class LRU {
         }
     }
 
-    // 更新缓存
+    /***
+     * 更新缓存，核心代码
+     */
     public void updateCache(LinkNode data){
         // 如果被访问数据已经存在链表中，则原记录删除，重新头插入；
         LinkNode index = this.MemCache.search(data);

@@ -45,29 +45,17 @@ public class LRU {
         for (int i = 0 ; i < 100; i ++) {
             LinkNode node = new LinkNode(new Random().nextInt(20) + 1);
             System.out.printf("当前结点值：%s； ",node.value);
-            lru.search(node);
+            lru.cache(node);
             lru.MemCache.show();
             System.out.println("队列是否满：" + lru.MemCache.isFull());
         }
     }
 
-    // 查找(缓存是介于CPU和磁盘IO之间的区域，临时存放高频使用的数据)
-    public Integer search(LinkNode data){
-        // 查找对象指针的具体值，cache中
-        LinkNode cacheIndex = this.MemCache.search(data);
-        this.updateCache(data);
-        if (cacheIndex != null){
-            return cacheIndex.value;
-        } else {
-            // 去磁盘或者内存IO中查询
-            return null;
-        }
-    }
 
     /***
      * 更新缓存，核心代码
      */
-    public void updateCache(LinkNode data){
+    public void cache(LinkNode data){
         // 如果被访问数据已经存在链表中，则原记录删除，重新头插入；
         LinkNode index = this.MemCache.search(data);
         if(index != null){

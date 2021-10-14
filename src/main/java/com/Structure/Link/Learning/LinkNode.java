@@ -26,7 +26,7 @@ public class LinkNode {
     public int value;
     public LinkNode next = null;
     public LinkNode(){
-
+        // 不赋值默认是一个空指针
     }
     public LinkNode(int value){
         this.value = value;

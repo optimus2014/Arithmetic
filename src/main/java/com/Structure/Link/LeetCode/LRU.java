@@ -3,6 +3,8 @@ package com.Structure.Link.LeetCode;
 import com.Structure.Link.Learning.CirculeLink;
 import com.Structure.Link.Learning.LinkNode;
 
+import java.util.Random;
+
 /**
  * 使用链表实现LRU算法(缓存淘汰算法)
  *
@@ -27,18 +29,34 @@ import com.Structure.Link.Learning.LinkNode;
  */
 public class LRU {
 
+    // 缓存链表，使用环形链表
+    private CirculeLink MemCache;
+    // 环形链表长度
+    private int length;
+
+    public LRU(int length){
+        this.length = length;
+        this.MemCache = new CirculeLink(this.length);
+    }
+
     public static void main(String[] args) {
-        LinkNode ln = new LinkNode();
-
         // 测试LRU算法的性能和FIFO的性能区别
-
+        LRU lru = new LRU(6);
+        for (int i = 0 ; i < 100; i ++) {
+            LinkNode node = new LinkNode(new Random().nextInt(10) + 1);
+            System.out.printf("当前结点值：%s； ",node.value);
+            lru.search(node);
+            lru.MemCache.show();
+            System.out.println("队列是否满：" + lru.MemCache.isFull());
+        }
     }
 
     // 查找(缓存是介于CPU和磁盘IO之间的区域，临时存放高频使用的数据)
     public Integer search(LinkNode data){
         // 查找对象指针的具体值，cache中
         LinkNode cacheIndex = this.MemCache.search(data);
-        if (cacheIndex == null){
+        this.updateCache(data);
+        if (cacheIndex != null){
             return cacheIndex.value;
         } else {
             // 去磁盘或者内存IO中查询
@@ -49,12 +67,15 @@ public class LRU {
     // 更新缓存
     public void updateCache(LinkNode data){
         // 如果被访问数据已经存在链表中，则原记录删除，重新头插入；
-        if(this.MemCache.search(data) == null){
-            // 删除节点，头节点插入
-            this.MemCache.delete(data);
+        LinkNode index = this.MemCache.search(data);
+        if(index != null){
+            // 数据存在，删除节点，头节点插入
+            System.out.print("Cache 存在；");
+            this.MemCache.delete(index);
             this.MemCache.insert(data,this.MemCache.getHead());
         } else {
             // 待查找的数据不存在
+            System.out.print("Cache 不存在；");
             if (this.MemCache.isFull()){
                 // 链表已满，删除尾节点，插入头节点
                 this.MemCache.delete(this.MemCache.getTail());
@@ -65,11 +86,6 @@ public class LRU {
             }
         }
     }
-
-    // 缓存链表，使用环形链表
-    private CirculeLink MemCache = new CirculeLink();
-
-
 
 
 }

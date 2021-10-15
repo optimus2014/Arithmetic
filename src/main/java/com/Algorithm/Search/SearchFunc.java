@@ -1,4 +1,4 @@
-package com.Algorithm.Purpose;
+package com.Algorithm.Search;
 
 /***
  * 7大查找算法：(需要已排序列表)

@@ -1,4 +1,4 @@
-package com.Algorithm.Purpose;
+package com.Algorithm.DynamicProgramming;
 
 import java.util.HashSet;
 

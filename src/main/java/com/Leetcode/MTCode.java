@@ -1,4 +1,4 @@
-package com.NewCoder;
+package com.Leetcode;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package com.Algorithm.Purpose;
+package com.Algorithm.Sort;
 
 /**
  * 8大排序算法：

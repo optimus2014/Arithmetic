@@ -29,7 +29,7 @@ public class HeapSort {
 
     public static int[] heapSord(int[] data){
         show(data);
-        int len = data.length;
+        int len = data.length - 1;
 
         /**
          * 步骤一：构建大根堆

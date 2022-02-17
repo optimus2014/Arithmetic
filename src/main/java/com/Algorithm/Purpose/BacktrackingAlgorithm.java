@@ -6,9 +6,12 @@ import static javax.print.attribute.standard.MediaSizeName.A;
 
 /**
  * 回溯算法：
+ *
+ * 经典回溯算法问题：
  * 全排列问题
  * 0-1背包问题
  * 八皇后问题
+ * 正则表达式
  *
  * 回溯算法可以简单归结为：
  *
@@ -28,9 +31,14 @@ import static javax.print.attribute.standard.MediaSizeName.A;
 public class BacktrackingAlgorithm {
 
     public static void main(String[] args) {
-        List<List<Integer>> res = permute(new int[]{1,2,3,4});
+//        List<List<Integer>> res = permute(new int[]{1,2,3,4});
+//        showList(res);
+        int[] queues = {1,2,4,5,7,6,0,3};
+        BacktrackingAlgorithm ba = new BacktrackingAlgorithm();
+//        ba.printQueues(queues);
 
-        showList(res);
+        System.out.println("解法个数：" + ba.calNQueens(0));
+
     }
     private static void showList(List<List<Integer>> res){
         for (int i = 0 ; i < res.size() ; i ++){
@@ -43,7 +51,79 @@ public class BacktrackingAlgorithm {
     }
 
 
-    /**
+    /****************************************
+     * 八皇后问题
+     * 可以使用回溯法和动态规划法
+     * 引申处理N皇后问题，返回可以实现的结果个数
+     */
+    public int calNQueens(int n){
+        // 计算n皇后问题
+        int res = 0;
+        int[] queensRes =  new int[n];   // 八皇后问题的最终结果，记录每行元素放置在哪一列，使用全局变量
+        res = calQueens(n,queensRes,0,res);
+        return res;
+    }
+
+    /***********************
+     *
+     */
+
+    public int calQueens(int N,int[] queens,int row,int res){
+//        for(int i = 0; i< queuesRes.length;i ++){
+//            System.out.print(queuesRes[i] + ",");
+//        }
+//        System.out.println();
+        // row是行号，每次判断一行的可行值
+        if(row == N){
+            // 8行已经执行完毕，打印输出
+            printQueues(queens);
+            res += 1;
+            return res;
+        }
+
+        for(int col = 0; col < N ; ++ col ){
+            if(is_ok(queens,row,col)){
+                queens[row] = col;
+                res = calQueens(N,queens,row + 1,res);
+            }
+        }
+        return res;
+    }
+    private boolean is_ok(int[] queens,int row,int col){
+        // 判断当前列位置是否ok，N皇后问题的规则是斜着，横竖都不能有重复值
+        int left = col - 1, right = col + 1;   // 判断左右斜面是否可行
+        for(int i = row - 1;i >= 0; i --){
+
+            if (left == queens[i] && left >= 0){
+                return false;
+            }
+            if (right == queens[i] && right < 8){
+                return false;
+            }
+            if (queens[i] == col){
+                return false;
+            }
+            -- left;
+            ++ right;
+        }
+        return true;
+    }
+
+    private void printQueues(int[] res){
+        System.out.println("==========================================");
+        for(int i = 0; i < res.length; i ++){
+            for (int j = 0; j < res.length ;j ++ ){
+                if (j == res[i]){
+                    System.out.print("@ ");
+                } else {
+                    System.out.print("* ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    /********************************
      * 数组全排列问题
      *
      */

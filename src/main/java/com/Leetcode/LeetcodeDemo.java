@@ -1,17 +1,21 @@
 package com.Leetcode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class LeetcodeDemo {
     public static void main(String[] args) {
 
-        LeetcodeDemo.show(LeetcodeDemo.twoSum(new int[]{3,2,4},6));
-        LeetcodeDemo.show(LeetcodeDemo.generateParenthesis(2));
-        LeetcodeDemo.show(LeetcodeDemo.generateParenthesis(3));
-        LeetcodeDemo.show(LeetcodeDemo.generateParenthesis(4));
+//        LeetcodeDemo.show(LeetcodeDemo.twoSum(new int[]{3,2,4},6));
+//        LeetcodeDemo.show(LeetcodeDemo.generateParenthesis(2));
+//        LeetcodeDemo.show(LeetcodeDemo.generateParenthesis(3));
+//        LeetcodeDemo.show(LeetcodeDemo.generateParenthesis(4));
+        System.out.println(LeetcodeDemo.convert("AB",3));
+
+        LeetcodeDemo ld = new LeetcodeDemo();
+        int[] nums = {-1,2,1,-4};
+        int r = ld.threeSumClosest(nums ,1);
+        System.out.println();
+
 
         /**
          * "(())","()()"
@@ -20,6 +24,86 @@ public class LeetcodeDemo {
          */
 
     }
+
+    public int threeSumClosest(int[] nums, int target) {
+        // 思路：先对数组排序，双指针分别指向首尾，和目标值相减，小于零，小指针增加，大于0，大指针减小，两支针相碰，或者结果为
+        if(nums.length < 3){
+            int result = 0;
+            for(int i: nums){
+                result += i;
+            }
+            return result;
+        }
+        // 数组排序
+        Arrays.sort(nums);
+        int front = 0;
+        int tail = nums.length - 1;
+        int min = 0;
+        for (int i = 0; i < nums.length - 2 ; i ++){
+            front = i + 1;
+            tail = nums.length - 1;
+            while(front < tail){
+                int tmp = nums[i] + nums[front] + nums[tail];
+                if (tmp == target) {
+                    return target;
+                }
+
+                if(min > abs(target, tmp))
+                    min = abs(target,tmp);
+
+                if (tmp > target)
+                    tail --;
+                else
+                    front ++;
+            }
+        }
+        return min;
+    }
+
+    private int abs(int a,int b){
+        if (a > b)
+            return a - b;
+        else
+            return b - a;
+    }
+
+    /**
+     * Z字型字符串转换
+     * @param s
+     * @param numRows
+     * @return
+     */
+    public static String convert(String s, int numRows) {
+        // 空间复杂度较高的算法
+        if (s.length() == 0 || s == "" || s.length() <= numRows){
+            return s;
+        }
+
+        StringBuilder[] container = new StringBuilder[numRows];
+        for (int i = 0; i < numRows ; i ++ ){
+            container[i] = new StringBuilder();
+        }
+
+        int index = 0;
+        int row = 0;
+        int flag = -1;
+        while (index < s.length()){
+            container[row].append(s.charAt(index));
+            if (row == (numRows - 1) || row == 0){
+                flag = -1 * flag;
+            }
+            row = row + flag;
+            index ++;
+        }
+        StringBuilder result = new StringBuilder();
+        for (StringBuilder sb : container){
+            result.append(sb.toString());
+        }
+        return result.toString();
+    }
+
+
+
     public static int[] twoSum(int[] nums, int target) {
         HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
         map.put(nums[0],0);

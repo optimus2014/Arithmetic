@@ -50,6 +50,35 @@ public class BacktrackingAlgorithm {
         }
     }
 
+    /**************
+     *
+     */
+    List<List<Integer>> res = new ArrayList();
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        cal(0,0,new LinkedList<Integer> (),candidates,target);
+        return res;
+    }
+
+    private void cal(int idx,int sum,LinkedList<Integer> track,int[] candidates,int target){
+        if(idx >= candidates.length || sum > target){
+            // 已经遍历到队尾，或者最大值超标，终止回溯
+            return ;
+        }
+
+        if(sum == target){
+            // 筛选完成
+            res.add(new ArrayList<Integer>(track));
+            return;
+        }
+        // 使用当前元素
+        track.addLast(candidates[idx]);
+        cal(idx,sum + candidates[idx],track,candidates,target);
+
+        // 不使用当前元素
+        track.removeLast();
+        cal(idx + 1,sum,track,candidates,target);
+    }
 
     /****************************************
      * 八皇后问题

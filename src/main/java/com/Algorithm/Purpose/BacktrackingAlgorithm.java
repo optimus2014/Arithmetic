@@ -33,13 +33,19 @@ public class BacktrackingAlgorithm {
     public static void main(String[] args) {
 //        List<List<Integer>> res = permute(new int[]{1,2,3,4});
 //        showList(res);
-        int[] queues = {1,2,4,5,7,6,0,3};
+//        int[] queues = {1,2,4,5,7,6,0,3};
         BacktrackingAlgorithm ba = new BacktrackingAlgorithm();
-//        ba.printQueues(queues);
+////        ba.printQueues(queues);
+//
+//        System.out.println("解法个数：" + ba.calNQueens(0));
 
-        System.out.println("解法个数：" + ba.calNQueens(0));
-
+        char[][] board = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+        String word = "ABCCED";
+        boolean res = ba.exist(board,word);
+        System.out.println("查找结果：" + res);
     }
+
+
     private static void showList(List<List<Integer>> res){
         for (int i = 0 ; i < res.size() ; i ++){
             StringBuilder sb = new StringBuilder();
@@ -225,6 +231,73 @@ public class BacktrackingAlgorithm {
             sb.deleteCharAt(sb.length()-1);
             flag[i] = false;
         }
+    }
+
+
+    /*****
+     * LeetCode 剑指 Offer 12. 矩阵中的路径
+     * 采用回溯算法
+     * @param board
+     * @param word
+     * @return
+     */
+    public boolean exist(char[][] board, String word) {
+        // 思路：回溯法，相同元素逐一尝试，看是否可到达，
+        // 难点：同一单元格只能用一次，方法是建一个相同的位置矩阵，采用就置1，否则默认是0
+        if(word.length() == 0){
+            return true;
+        }
+        boolean[][] flag = new boolean[board.length][board[0].length];
+        // 标签数组默认置为false
+        for(int i = 0;i < board.length;i ++){
+            for (int j = 0; j < board[i].length;j ++){
+                flag[i][j] = false;
+            }
+        }
+        // 遍历元素
+        for(int i = 0; i < board.length;i ++){
+            for (int j = 0; j < board[i].length;j ++){
+                if(scan(board,word,flag,0,i,j)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean scan(char[][] board, String word,
+                         boolean[][] flag,int idx,
+                         int row,int col){
+
+        if(idx >= word.length()){
+            return true;
+        }
+        if(board[row][col] != word.charAt(idx))
+            return false;
+
+        flag[row][col] = true;
+        boolean res = false;
+        idx ++;
+        // 前后左右回溯
+        if(row + 1 <= board.length - 1 && !flag[row + 1][col]){
+            res = scan(board,word,flag,idx,row + 1,col);
+            if(res) return res;
+        }
+        if(row - 1 >= 0 && !flag[row - 1][col]){
+            res = scan(board,word,flag,idx,row - 1,col);
+            if(res) return res;
+        }
+        if(col + 1 <= board[row].length - 1 && !flag[row][col + 1]){
+            res = scan(board,word,flag,idx,row,col + 1);
+            if(res) return res;
+        }
+        if(col - 1 >= 0 && !flag[row][col - 1]){
+            res = scan(board,word,flag,idx,row,col - 1);
+            if(res) return res;
+        }
+        flag[row][col] = false;
+        idx --;
+        return res;
     }
 }
 

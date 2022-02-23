@@ -57,7 +57,7 @@ public class BacktrackingAlgorithm {
     }
 
     /**************
-     *
+     * LeetCode [39. 组合总和]
      */
     List<List<Integer>> res = new ArrayList();
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
@@ -162,7 +162,6 @@ public class BacktrackingAlgorithm {
      * 数组全排列问题
      *
      */
-
 
     public static List<List<Integer>> permute(int[] nums) {
         int len = nums.length;

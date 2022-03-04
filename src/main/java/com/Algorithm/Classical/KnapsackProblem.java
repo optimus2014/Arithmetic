@@ -1,5 +1,8 @@
 package com.Algorithm.Classical;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 /*********
  * 背包问题：
  * 是一种组合优化的NP完全问题
@@ -16,11 +19,15 @@ public class KnapsackProblem {
     public static void main(String[] args) {
         System.out.println("0-1背包问题");
         int[] values = {9, 10, 7, 4};
-        int[] weights = {3, 5, 2, 1};
-        int capacity = 7;
+        int[] weights = {3, 5, 2, 1,4,6};
+        int capacity = 10;
         KnapsackProblem kp = new KnapsackProblem();
-        int v = kp.knapsack(values,weights,capacity);
-        System.out.println("背包总容量：" + capacity + ";最大可装价值：" + v);
+//        int v = kp.knapsack(values,weights,capacity);
+//        System.out.println("背包总容量：" + capacity + ";最大可装价值：" + v);
+
+
+        int v2 = kp.knapsack2(weights, 2, capacity);
+        System.out.println("背包总容量：" + capacity + ";最大可装价值：" + v2);
     }
 
     /**
@@ -66,5 +73,29 @@ public class KnapsackProblem {
             flag[i] = false;
         }
     }
+
+
+    /***
+     * 使用一维数组存储动态规划的中间结果
+     * 计算0-1背包问题
+     */
+    public int knapsack2(int[] items, int n, int w) {
+//        Arrays.sort(items);
+        boolean[] states = new boolean[w+1]; // 默认值false
+        states[0] = true;  // 第一行的数据要特殊处理，可以利用哨兵优化
+        if (items[0] <= w) {
+            states[items[0]] = true;
+        }
+        for (int i = 1; i < n; ++i) { // 动态规划
+            for (int j = w-items[i]; j >= 0; --j) {//把第i个物品放入背包
+                if (states[j]==true) states[j+items[i]] = true;
+            }
+        }
+        for (int i = w; i >= 0; --i) { // 输出结果
+            if (states[i] == true) return i;
+        }
+        return 0;
+    }
+
 
 }

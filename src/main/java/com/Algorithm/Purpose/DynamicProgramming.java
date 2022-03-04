@@ -38,7 +38,7 @@ public class DynamicProgramming {
      * 状态转移方程是： min_dist(i,j) = items[i,j] + min(min_dist(i - 1,j),min_dist(i, j - 1))
      */
 
-    public int shortestPath(int[][] items){
+    public int shortestPathByIteration(int[][] items){
         if (items.length <= 0){
             return 0;
         }

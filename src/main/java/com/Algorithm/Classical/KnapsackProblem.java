@@ -75,26 +75,44 @@ public class KnapsackProblem {
     }
 
 
-    /***
-     * 使用一维数组存储动态规划的中间结果
-     * 计算0-1背包问题
+    /**
+     * 使用动态规划方法实现0-1背包问题
+     * 背包约束条件：物品价格，物品重量，最大物品个数，背包容量
+     * @param items,物品重量清单
+     * @param values，物品价值清单
+     * @param n，可以放置的物品个数
+     * @param w，背包容积
+     * @return
      */
-    public int knapsack2(int[] items, int n, int w) {
-//        Arrays.sort(items);
-        boolean[] states = new boolean[w+1]; // 默认值false
-        states[0] = true;  // 第一行的数据要特殊处理，可以利用哨兵优化
-        if (items[0] <= w) {
-            states[items[0]] = true;
-        }
-        for (int i = 1; i < n; ++i) { // 动态规划
-            for (int j = w-items[i]; j >= 0; --j) {//把第i个物品放入背包
-                if (states[j]==true) states[j+items[i]] = true;
+    public int knapsack2(int[] items, int[] values, int n, int w) {
+        // 使用一个n * (w + 1)的二维数组作为备忘录，
+        int res = 0;
+        // 遍历每一个元素，记录选择这个元素和不选择这个元素的价值差多少
+        // 设置初始值
+        int[][] mem = new int[n][w + 1];
+        for(int i = 0; i < n ; i ++){
+            for(int j = 0; j <= w; j ++){
+                mem[i][j] = -1;
             }
         }
-        for (int i = w; i >= 0; --i) { // 输出结果
-            if (states[i] == true) return i;
+
+        mem[0][0] = 0;   // 设置哨兵，没有放置元素的情况下，重量为0
+
+        // 需要先设置初始值，用于后续记录的前置判断
+        if(items[0] <= w){
+            mem[0][items[0]] = values[0];
         }
-        return 0;
+
+        //从第1行开始记录
+        for(int i = 1; i < n; i ++){
+            for(int j = 0;j <= w; j ++){
+
+
+            }
+
+        }
+
+        return res;
     }
 
 

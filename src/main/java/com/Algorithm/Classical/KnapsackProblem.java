@@ -18,16 +18,15 @@ import java.util.Arrays;
 public class KnapsackProblem {
     public static void main(String[] args) {
         System.out.println("0-1背包问题");
-        int[] values = {9, 10, 7, 4};
+        int[] values = {9, 10, 7, 4,8, 12};
         int[] weights = {3, 5, 2, 1,4,6};
         int capacity = 10;
         KnapsackProblem kp = new KnapsackProblem();
-//        int v = kp.knapsack(values,weights,capacity);
-//        System.out.println("背包总容量：" + capacity + ";最大可装价值：" + v);
+        int v = kp.knapsack(values,weights,capacity);
+        System.out.println("背包总容量：" + capacity + ";回溯法最大可装价值：" + v);
 
-
-        int v2 = kp.knapsack2(weights, 2, capacity);
-        System.out.println("背包总容量：" + capacity + ";最大可装价值：" + v2);
+        int v2 = kp.knapsack2(weights, values, capacity);
+        System.out.println("背包总容量：" + capacity + ";动规法最大可装价值：" + v2);
     }
 
     /**
@@ -80,14 +79,17 @@ public class KnapsackProblem {
      * 背包约束条件：物品价格，物品重量，最大物品个数，背包容量
      * @param items,物品重量清单
      * @param values，物品价值清单
-     * @param n，可以放置的物品个数
      * @param w，背包容积
      * @return
      */
-    public int knapsack2(int[] items, int[] values, int n, int w) {
+    public int knapsack2(int[] items, int[] values, int w) {
+
+        // 思路：遍历每一个元素，记录选择这个元素和不选择这个元素的价值差多少
         // 使用一个n * (w + 1)的二维数组作为备忘录，
-        int res = 0;
-        // 遍历每一个元素，记录选择这个元素和不选择这个元素的价值差多少
+        int n = items.length;
+        if (n <= 0){
+            return 0;
+        }
         // 设置初始值
         int[][] mem = new int[n][w + 1];
         for(int i = 0; i < n ; i ++){
@@ -95,25 +97,40 @@ public class KnapsackProblem {
                 mem[i][j] = -1;
             }
         }
-
-        mem[0][0] = 0;   // 设置哨兵，没有放置元素的情况下，重量为0
-
-        // 需要先设置初始值，用于后续记录的前置判断
+        // 设置哨兵，没有放置元素的情况下，重量为0
+        mem[0][0] = 0;
+        // 需要先设置初始值，用于后续记录的前置判断，先看第一个元素是否要放置进去
         if(items[0] <= w){
             mem[0][items[0]] = values[0];
         }
 
         //从第1行开始记录
         for(int i = 1; i < n; i ++){
+            // 第i个元素不放置的情况
             for(int j = 0;j <= w; j ++){
-
-
+                if(mem[i - 1][j] >= 0){
+                    mem[i][j] = mem[i - 1][j];
+                }
             }
 
+            // 第i个元素放置的情况
+            for (int j = 0; j <= w - items[i]; j++){
+                if(mem[i - 1][j] >= 0){
+                    int v = mem[i - 1][j] + values[i];
+                    // 选择i元素后的价值，大于对应重量下标的价值
+                    if(v > mem[i][j + items[i]]){
+                        mem[i][j + items[i]] = v;
+                    }
+                }
+            }
         }
 
-        return res;
+        int max_v = -1;
+        for(int i = w ; i >= 0;i --){
+            if(mem[n -1][i] > max_v){
+                max_v = mem[n -1][i];
+            }
+        }
+        return max_v;
     }
-
-
 }

@@ -1,7 +1,6 @@
 package com.Structure.Graph.Learning;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * 图的遍历算法：
@@ -57,7 +56,7 @@ public class GrapScanhFunc {
      */
     public static List<GraphItem> DFS(Graph graph,GraphItem start){
         List<GraphItem> result = new ArrayList<GraphItem>();
-        // 图元素标识位
+        // 图元素标识位，KV型存储，默认都是未遍历
         Map<GraphItem,Boolean> itemKeys = new HashMap<GraphItem, Boolean>();
         for(GraphItem item : graph.getItems()){
             itemKeys.put(item,Boolean.FALSE);
@@ -71,7 +70,7 @@ public class GrapScanhFunc {
             if(!itemKeys.get(item)){
                 // 当前元素不存在
                 result.add(item);
-                itemKeys.put(item,Boolean.TRUE);
+                itemKeys.put(item,Boolean.TRUE);  // 当前元素标记为已遍历
                 for(GraphItem tem_item: graph.getGraph().get(item).keySet()){
                     stack.add(tem_item);
                 }
@@ -132,7 +131,7 @@ public class GrapScanhFunc {
         }
 
         // 按照出度最多的节点作为图的遍历起点
-        for(GraphItem start:graph.getStart()){
+        for(GraphItem start:graph.getStart()){  // 多子图模式？
             for(GraphItem item:BFS(graph,start)){
                 if(!itemKeys.get(item)){
                     result.add(item);

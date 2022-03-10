@@ -2,22 +2,126 @@ package com;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class MainDemo {
     public static void main(String[] args) {
         System.out.println("主函数");
-        System.out.println((2+1)/2);
-
-        System.out.println(MainDemo.check(12,34));
-        System.out.println(MainDemo.check(0,0));
-        System.out.println(MainDemo.check(10,2));
+//        System.out.println((2+1)/2);
+//
+//        System.out.println(MainDemo.check(12,34));
+//        System.out.println(MainDemo.check(0,0));
+//        System.out.println(MainDemo.check(10,2));
         MainDemo md = new MainDemo();
-        System.out.println(md.movingCount(100,100,20));
-
-        System.out.println(md.movingCount2(100,100,20));
+//        System.out.println(md.movingCount(100,100,20));
+//
+//        System.out.println(md.movingCount2(100,100,20));
+//        System.out.println(md.myPow(3.3,2));
+//        System.out.println(md.myPow(3.3,-2));
+//        System.out.println(md.myPow(3.3,1));
+//        System.out.println(md.myPow(3.3,0));
+        int[] data = {1,2,3,4};
+//        System.out.println(md.exchange(data));
+        int[] in = {1,0};
+        int[] out = {1,0};
+        System.out.println(md.validateStackSequences(in, out));
     }
 
+    /**
+     * 模拟栈的压入，转出
+     * @param pushed
+     * @param popped
+     * @return
+     */
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        /**
+         * 思路：模拟压栈、出栈的操作
+         */
+        if(pushed.length == 0 && popped.length == 0){
+            return true;
+        }
+        int p = 0, q = 0;
+        LinkedList<Integer> stack = new LinkedList<Integer>();
+        stack.add(pushed[p]);
+        p += 1;
+        while(p < pushed.length || q < popped.length){
+            while(p < pushed.length && (stack.size() == 0 || stack.get(stack.size() - 1) != popped[q])){
+                stack.add(pushed[p]);
+                p += 1;
+            }
+
+            while (q < popped.length && stack.size() > 0 && stack.get(stack.size() - 1) == popped[q]){
+                stack.removeLast();
+                q += 1;
+            }
+            if (p == pushed.length &&q < popped.length && stack.get(stack.size() - 1) != popped[q]){
+                return false;
+            }
+        }
+
+        return true;
+//        if(stack.size() >= 0){
+//            return false;
+//        } else {
+//            return true;
+//        }
+    }
+
+
+    /**
+     * 剑指offer第21题，调整数组顺序使奇数位于偶数前面
+     * @param nums
+     * @return
+     */
+    public int[] exchange(int[] nums) {
+        // 使用双指针的方法
+        int p = 0, q = nums.length -1;
+        while(p < q){
+            while(p < q && (nums[p] & 1) == 1){
+                p += 1;
+            }
+            while (p < q && ((nums[q] & 1) == 0)){
+                q -= 1;
+            }
+            if((nums[p] & 1) == 0 && (nums[q] & 1) == 1){
+                int tmp = nums[p];
+                nums[p] = nums[q];
+                nums[q] = tmp;
+                p += 1;
+                q -= 1;
+            }
+        }
+        return nums;
+    }
+
+
+    // 实现次方函数
+    public double myPow(double x, int n) {
+        // 重点关注负数的次方问题，以及大数问题
+        if (n == 0){
+            return 1;
+        }
+
+        if (n == 1)
+            return x;
+        if (n == -1)
+            return 1 / x;
+        boolean flag = true;
+
+        if (n < 0) {
+            flag = false;
+            n = -1 * n;
+        }
+        double res = myPow(x,n >> 1);
+        res = res * res;
+
+        if(flag){
+            return res;
+        } else {
+            return 1/ res;
+        }
+    }
 
     // 机器人运动范围，方法一：使用回溯法
     public int movingCount(int m, int n, int k) {

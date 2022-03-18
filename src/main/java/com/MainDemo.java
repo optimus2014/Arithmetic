@@ -1,9 +1,6 @@
 package com;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class MainDemo {
     public static void main(String[] args) {
@@ -21,11 +18,78 @@ public class MainDemo {
 //        System.out.println(md.myPow(3.3,-2));
 //        System.out.println(md.myPow(3.3,1));
 //        System.out.println(md.myPow(3.3,0));
-        int[] data = {1,2,3,4};
+//        int[] data = {1,2,3,4};
 //        System.out.println(md.exchange(data));
-        int[] in = {1,0};
-        int[] out = {1,0};
-        System.out.println(md.validateStackSequences(in, out));
+//        int[] in = {1,0};
+//        int[] out = {1,0};
+//        System.out.println(md.validateStackSequences(in, out));
+        //"678","45"
+        System.out.println(md.multiply("498828660196", "840477629533"));
+    }
+
+    /***
+     * 字符串数字相乘
+     */
+    public String multiply(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")){
+            return "0";
+        } else if (num1.equals("1")){
+            return num2;
+        } else if (num2.equals("1")){
+            return num1;
+        }
+        StringBuilder sb = new StringBuilder();
+        int num1_l = num1.length();
+        int num2_l = num2.length();
+        // 乘法计算最终结果的记录数组
+        int[] res = new int[num1_l + num2_l];
+        // 模拟乘法，两个数字的计算
+        for( int i = num1_l - 1; i >= 0; i --){
+            for (int j = num2_l - 1; j >= 0; j --){
+                // 当前计算影响到的最终结果数组位置,总共两位
+                // 影响的最小位数下标是：(res.length - 1) - [(num1_l - 1 - i) + (num2_l - 1 - j)] ; 简化计算后是下列公式
+                int idx = i + j + 1;
+                int val = (int)(num1.charAt(i) - '0') * (int)(num2.charAt(j) - '0');
+                // 需要考虑 相加后进一位的情况
+                res[idx] += val % 10;
+                if (res[idx] >= 10){
+                    res[idx - 1] += 1;
+                    res[idx] = res[idx] - 10;
+                }
+                res[idx - 1] += val / 10;
+                if (res[idx - 1] >= 10){
+                    res[idx - 2] += 1;
+                    res[idx - 1] = res[idx - 1] - 10;
+                }
+            }
+        }
+        // 计算最终结果的起始下标，第一个数字为0，则从1下标开始
+        int start = res[0] == 0 ? 1:0;
+        for(int i = start; i < res.length; i ++){
+            sb.append(res[i]);
+        }
+        return sb.toString();
+    }
+    /**
+     * 按层打印二叉树
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queues = new LinkedList<TreeNode>();
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        queues.add(root);
+        while(!queues.isEmpty()){
+            ArrayList<Integer> tmp = new ArrayList<Integer>();
+            int s = queues.size();
+            for (int i = 0; i < s; i ++){
+                TreeNode tmp_node = queues.poll();
+                if(tmp_node.left != null) queues.add(tmp_node.left);
+                if(tmp_node.right != null) queues.add(tmp_node.right);
+                tmp.add(tmp_node.val);
+            }
+            res.add(tmp);
+        }
+
+        return res;
     }
 
     /**
@@ -244,3 +308,10 @@ public class MainDemo {
     }
 
 }
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+ }

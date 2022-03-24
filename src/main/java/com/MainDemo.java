@@ -24,7 +24,55 @@ public class MainDemo {
 //        int[] out = {1,0};
 //        System.out.println(md.validateStackSequences(in, out));
         //"678","45"
-        System.out.println(md.multiply("498828660196", "840477629533"));
+//        System.out.println(md.multiply("498828660196", "840477629533"));
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(2);
+        root.left.left = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        root.right.left = new TreeNode(4);
+        root.right.right = new TreeNode(3);
+        System.out.println(md.isSymmetric(root));
+    }
+
+    /***
+     * 判断对称二叉树
+     */
+    public boolean isSymmetric(TreeNode root) {
+        // 思路：使用队列实现按层遍历，使用栈判断是否对称，需要注意的点：元素值一样，但是左右子树不一样
+        Queue<TreeNode> queues = new LinkedList<TreeNode>();
+        queues.add(root.left);
+        queues.add(root.right);
+
+        while (!queues.isEmpty()){
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            int len = queues.size();
+            for(int i = 0 ; i < len ; i ++){
+                TreeNode tmp = queues.poll();
+                if(tmp != null) {
+                    queues.add(tmp.left);
+                    queues.add(tmp.right);
+                }
+                if (i < len / 2){
+                    // 前一半元素添加到栈中
+                    stack.add(tmp);
+                } else {
+                    // 后一半元素出栈判断
+                    TreeNode stack_tmp = stack.pop();
+                    if ((tmp == null && stack_tmp == null) ){
+                        continue;
+                    }else if (tmp != null && stack_tmp != null && tmp.val == stack_tmp.val){
+                        continue;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            if( !stack.isEmpty() ){
+                return false;
+            }
+        }
+        return true;
     }
 
     /***

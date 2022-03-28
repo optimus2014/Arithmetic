@@ -1,6 +1,7 @@
 package com.Structure.Tree.Learning;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * 树的遍历算法：
@@ -32,6 +33,10 @@ public class ScanTreeFunc {
         ArrayList<Integer> lastRes = new ArrayList<Integer>();
         lastScan(root,lastRes);
         showArray(lastRes);
+
+        // 迭代方法实现二叉树的后序遍历
+        ArrayList<Integer> lastIteraRes = lastScanItera(root);
+        showArray(lastIteraRes);
     }
     private static void showArray(ArrayList<Integer> res){
         StringBuilder sb = new StringBuilder();
@@ -71,6 +76,23 @@ public class ScanTreeFunc {
         lastScan(root.left,res);
         lastScan(root.right,res);
         res.add(root.value);
+    }
+
+    /**
+     * 后序遍历，迭代算法，使用栈，分别是根右左的方式压入，再逆向出栈即可
+     * 分别把
+     */
+    public static ArrayList<Integer> lastScanItera(TreeNode root){
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        Stack<TreeNode> stack = new Stack<TreeNode>(); // 使用栈做中间的遍历结果缓存
+        stack.add(root);
+        while(!stack.isEmpty()){
+            TreeNode tmp = stack.pop();
+            if (tmp.left != null) stack.add(tmp.left);
+            if (tmp.right != null) stack.add(tmp.right);
+            res.add(0,tmp.value);
+        }
+        return res;
     }
 
 }
